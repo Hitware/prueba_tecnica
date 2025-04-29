@@ -1,13 +1,13 @@
 <?php
-
-
 use PHPUnit\Framework\TestCase;
 use App\Controllers\SearchController;
 use App\Models\SearchModel;
 use App\Views\SearchView;
 
+// Definir la constante necesaria para las pruebas
+define('MIN_SEARCH_CHARS', 3);
+
 class SearchControllerTest extends TestCase {
-    
     public function testSearchTermValidation() {
         // Create a mock of the search model that will return false for short terms
         $searchModel = $this->createMock(SearchModel::class);
@@ -15,15 +15,17 @@ class SearchControllerTest extends TestCase {
             ->willReturnCallback(function ($term) {
                 return strlen($term) >= MIN_SEARCH_CHARS;
             });
-        
+            
         $searchView = $this->createMock(SearchView::class);
-        
+        $searchView->expects($this->once())
+            ->method('displayError')
+            ->with($this->stringContains('El término de búsqueda debe tener al menos'));
+            
         $controller = new SearchController($searchModel, $searchView);
         
-        $this->expectOutputRegex('/Error: El término de búsqueda debe tener al menos/');
+        // Test with a short term
         $controller->handle(['term' => 'ab']);
     }
-    
     
     public function testNoResultsHandling() {
         // Create a mock of the search model that will return empty results
@@ -36,7 +38,7 @@ class SearchControllerTest extends TestCase {
         $searchView->expects($this->once())
             ->method('displayNoResults')
             ->with('test');
-        
+            
         // Create a controller instance with mocked dependencies
         $controller = new SearchController($searchModel, $searchView);
         
@@ -44,7 +46,6 @@ class SearchControllerTest extends TestCase {
         $controller->handle(['term' => 'test']);
     }
     
-   
     public function testResultsHandling() {
         // Create dummy results
         $results = ['dummy result 1', 'dummy result 2'];
@@ -59,7 +60,7 @@ class SearchControllerTest extends TestCase {
         $searchView->expects($this->once())
             ->method('displayResults')
             ->with($results);
-        
+            
         // Create a controller instance with mocked dependencies
         $controller = new SearchController($searchModel, $searchView);
         

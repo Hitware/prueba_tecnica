@@ -1,136 +1,65 @@
 # Aplicación de Búsqueda de Recursos Educativos
 
-Esta aplicación permite buscar coincidencias en los nombres de clases y exámenes de una plataforma de cursos online de idiomas a partir de las primeras letras proporcionadas (mínimo 3).
+Esta aplicación permite buscar clases y exámenes en una plataforma de cursos de idiomas escribiendo al menos las tres primeras letras del nombre del recurso que busca.
 
-## Requisitos
+## Lo que necesitas antes de empezar
 
 - PHP 7.4 o superior
 - MySQL 5.7 o superior
-- Extensión PDO de PHP habilitada
 
-## Instalación
+## Cómo instalar y configurar
 
-1. Clone este repositorio en su máquina local:
-   ```
-   git clone [URL_DEL_REPOSITORIO]
-   ```
+### Paso 1: Configura la base de datos
 
-2. No es necesario importar manualmente el esquema de la base de datos, ya que la aplicación configura automáticamente la base de datos durante la configuración inicial. Sin embargo, si lo desea, puede hacerlo manualmente:
-   ```
-   mysql -u [USUARIO] -p [NOMBRE_BASE_DATOS] < sql/schema.sql
-   ```
+Para configurar la aplicación con tu base de datos:
+
+1. Abre una terminal (línea de comandos) en la carpeta del proyecto
+2. Ejecuta el siguiente comando:
    
-   O puede ejecutar las migraciones directamente con:
-   ```
-   php main.php migrate
-   ```
-
-3. Configure sus credenciales de base de datos (elija uno de estos métodos):
+   php setup-env.php
    
-   a) **Usando variables de entorno (RECOMENDADO por seguridad)**:
-      - Ejecute el script de configuración de entorno:
-        ```
-        php setup-env.php
-        ```
-      - Esto creará un archivo `.env` con sus credenciales
-      - **IMPORTANTE**: La aplicación siempre priorizará las credenciales del archivo `.env` si existe
-   
-   b) **Usando el archivo de configuración** (alternativa):
-      - Edite el archivo `config/config.php` manualmente con sus credenciales.
-      - O ejecute el script de configuración inicial:
-        ```
-        php public/index.php config
-        ```
-      - Nota: Si existe un archivo `.env`, sus valores tendrán prioridad sobre `config.php`
+3. Se te pedirá que ingreses:
+   - Nombre de usuario de MySQL
+   - Contraseña de MySQL
+   - Nombre para la base de datos
+   - Host de la base de datos (generalmente "localhost")
 
-## Estructura del Proyecto
+### Paso 2: Crea las tablas y datos iniciales
 
-El proyecto sigue una arquitectura MVC (Modelo-Vista-Controlador):
-
-- **Models**: Contiene la lógica de negocio y acceso a datos.
-- **Views**: Gestiona la presentación de los datos.
-- **Controllers**: Coordina la interacción entre los modelos y las vistas.
-
-Además, se implementan interfaces para garantizar la consistencia y se utilizan clases abstractas para compartir funcionalidad común.
-
-## Uso
-
-### Comandos Disponibles
-
-La aplicación ofrece los siguientes comandos:
-
+Una vez configurada la conexión a la base de datos, ejecuta:
 ```
-php main.php search [TÉRMINO]     - Buscar recursos por término
-php main.php config               - Configurar la aplicación
-php main.php migrate              - Ejecutar migraciones de base de datos
-php main.php migrate:reset        - Reiniciar la base de datos (¡elimina todos los datos!)
+php main.php migrate
 ```
 
-### Búsqueda de Recursos
+Este comando:
+- Crea automáticamente la base de datos (si no existe)
+- Crea las tablas necesarias
+- Inserta datos de ejemplo
 
-Para buscar recursos, ejecute el comando:
+¡Después de estos dos pasos, la aplicación está lista para usarse!
 
+## Cómo usar la aplicación
+
+### Búsqueda de clases y exámenes
+
+Para buscar recursos, usa el comando:
 ```
-php main.php search [TÉRMINO_DE_BÚSQUEDA]
+php main.php search [PALABRA]
 ```
 
-Ejemplo:
+Donde `[PALABRA]` debe tener al menos 3 letras.
+
+#### Ejemplo:
 ```
 php main.php search trabajo
 ```
 
-Esto mostrará todas las clases y exámenes cuyo nombre contenga la palabra "trabajo".
+Los resultados mostrarán:
+- Para clases: nombre y calificación (sobre 5 puntos)
+- Para exámenes: nombre y tipo de examen
 
-### Configuración y Migración Automática
-
-Al ejecutar la configuración inicial (ya sea mediante el archivo `.env` o `config.php`), la aplicación automáticamente:
-
-1. Crea la base de datos si no existe
-2. Crea las tablas necesarias
-3. Inserta datos de ejemplo
-
-Esto significa que después de la configuración, la aplicación está lista para usarse sin pasos adicionales.
-
-## Patrones de Diseño Implementados
-
-- **MVC**: Separa la lógica de negocio, presentación y control.
-- **Repository Pattern**: Para el acceso a datos.
-- **Strategy Pattern**: Para los diferentes tipos de búsqueda.
-
-## Seguridad
-
-La aplicación implementa las siguientes medidas de seguridad:
-
-### Gestión de Credenciales
-
-- **Variables de entorno**: Las credenciales se almacenan preferentemente en un archivo `.env` que no debe incluirse en el control de versiones.
-- **Priorización de configuración**: El sistema prioriza las variables del archivo `.env` sobre las constantes de `config.php`.
-- **EnvLoader**: Implementación personalizada para cargar y gestionar variables de entorno de forma segura.
-
-### Seguridad de Base de Datos
-
-- **Prepared Statements**: Todas las consultas SQL utilizan prepared statements para prevenir inyecciones SQL.
-- **PDO**: Se utiliza PDO con opciones de seguridad mejoradas.
-- **Gestión de errores**: Los errores de conexión se gestionan adecuadamente sin exponer información sensible en producción.
-
-### Mejores Prácticas
-
-- **Archivos de configuración separados**: Las configuraciones sensibles están en archivos separados.
-- **Directrices de seguridad**: El archivo `.env.example` muestra la estructura pero no incluye credenciales reales.
-- **Documentación**: Se proporcionan instrucciones claras sobre cómo configurar la aplicación de forma segura.
-
-## Tests Unitarios
-
-Para ejecutar los tests unitarios (requiere PHPUnit):
-
+#### Ejemplo de resultados:
 ```
-phpunit tests/
-```
-
-## Estándares de Código
-
-Este proyecto sigue los estándares PSR:
-- PSR-1: Basic Coding Standard
-- PSR-2: Coding Style Guide
-- PSR-4: Autoloading Standard
-- Documentación con PHPDoc
+Clase: Vocabulario sobre Trabajo en Inglés | 5/5
+Clase: Conversaciones de Trabajo en Inglés | 5/5
+Examen: Trabajos y ocupaciones en Inglés | Selección

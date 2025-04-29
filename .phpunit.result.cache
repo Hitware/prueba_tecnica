@@ -1,0 +1,1 @@
+{"version":1,"defects":{"SearchControllerTest::testSearchTermValidation":4,"SearchControllerTest::testNoResultsHandling":4,"SearchControllerTest::testResultsHandling":4},"times":{"SearchControllerTest::testSearchTermValidation":0.005,"SearchControllerTest::testNoResultsHandling":0,"SearchControllerTest::testResultsHandling":0}}

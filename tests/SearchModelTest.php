@@ -1,13 +1,5 @@
 <?php
-/**
- * Search Model Test
- * 
- * PHPUnit test for the SearchModel
- * 
- * @package     LanguageCourses
- * @author      Developer Name
- * @version     1.0.0
- */
+
 
 use PHPUnit\Framework\TestCase;
 use App\Models\SearchModel;

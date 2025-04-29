@@ -1,25 +1,12 @@
 <?php
-/**
- * Search View
- * 
- * View for displaying search results
- * 
- * @package     LanguageCourses
- * @author      Developer Name
- * @version     1.0.0
- */
+
 
 namespace App\Views;
 
 use App\Interfaces\ResourceInterface;
 
 class SearchView {
-    /**
-     * Display search results
-     * 
-     * @param array $results Array of ResourceInterface objects
-     * @return void
-     */
+    
     public function displayResults(array $results): void {
         if (empty($results)) {
             $this->displayNoResults();
