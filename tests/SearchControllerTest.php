@@ -4,10 +4,8 @@ use App\Controllers\SearchController;
 use App\Models\SearchModel;
 use App\Views\SearchView;
 
-// Definir la constante necesaria para las pruebas
-define('MIN_SEARCH_CHARS', 3);
-
 class SearchControllerTest extends TestCase {
+    
     public function testSearchTermValidation() {
         // Create a mock of the search model that will return false for short terms
         $searchModel = $this->createMock(SearchModel::class);

@@ -20,13 +20,7 @@ class SearchView {
             echo $result->format() . PHP_EOL;
         }
     }
-    
-    /**
-     * Display a message when no results are found
-     * 
-     * @param string $term Search term
-     * @return void
-     */
+   
     public function displayNoResults(string $term = ''): void {
         if ($term) {
             echo "No se encontraron resultados para: '{$term}'" . PHP_EOL;
@@ -34,12 +28,12 @@ class SearchView {
             echo "No se encontraron resultados." . PHP_EOL;
         }
     }
+
+    public function displayError(string $message): void {
+        echo "Error: {$message}" . PHP_EOL;
+    }
     
-    /**
-     * Display usage instructions
-     * 
-     * @return void
-     */
+   
     public function displayUsage(): void {
         echo "Uso del comando de búsqueda: php main.php search <término>" . PHP_EOL;
         echo "  - El término debe tener al menos " . MIN_SEARCH_CHARS . " caracteres." . PHP_EOL;
